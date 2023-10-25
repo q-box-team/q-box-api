@@ -1,0 +1,40 @@
+server:
+  servlet:
+    context-path: /api
+    session:
+      cookie:
+        secure: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  security:
+    allow-origins: ${ALLOW_ORIGINS}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_ID}
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+logging:
+  slack:
+    webhook-uri: ${SLACK_URL}
+  config: classpath:logback-spring.xml
+
