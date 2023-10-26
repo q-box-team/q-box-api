@@ -8,8 +8,10 @@ import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
+import site.qbox.qboxserver.domain.answer.command.AnswerCommentRepo
 import site.qbox.qboxserver.domain.answer.command.AnswerRepo
 import site.qbox.qboxserver.domain.answer.command.entity.Answer
+import site.qbox.qboxserver.domain.answer.command.entity.AnswerComment
 import site.qbox.qboxserver.domain.answer.command.entity.AnswerId
 import site.qbox.qboxserver.domain.member.command.MemberRepo
 import site.qbox.qboxserver.domain.member.command.entity.Member
@@ -24,6 +26,8 @@ class AnswerDaoTest : DescribeSpec() {
 
     @Autowired
     lateinit var answerRepo: AnswerRepo
+    @Autowired
+    lateinit var answerCommentRepo: AnswerCommentRepo
     @Autowired
     lateinit var memberRepo: MemberRepo
     @Autowired
@@ -43,7 +47,7 @@ class AnswerDaoTest : DescribeSpec() {
                     )
                 )
 
-                answerRepo.saveAll(
+                val answers = answerRepo.saveAll(
                     listOf(
                         Answer("내용1", AnswerId(targetQuestion, members[0].email)),
                         Answer("내용2", AnswerId(targetQuestion, members[1].email)),
@@ -55,6 +59,19 @@ class AnswerDaoTest : DescribeSpec() {
                         Answer("내용8", AnswerId(2, members[2].email)),
                     )
                 )
+
+                answerCommentRepo.saveAll(
+                    listOf(
+                        AnswerComment("댓글1", members[0].email, answers[1].id),
+                        AnswerComment("댓글2", members[1].email, answers[1].id),
+                        AnswerComment("댓글3", members[1].email, answers[1].id),
+                        AnswerComment("댓글4", members[2].email, answers[1].id),
+                        AnswerComment("댓글5", members[1].email, answers[2].id),
+                        AnswerComment("댓글6", members[3].email, answers[2].id),
+                    )
+                )
+
+
             }
 
             it("question을 통한 목록 조회를 수행한다.") {

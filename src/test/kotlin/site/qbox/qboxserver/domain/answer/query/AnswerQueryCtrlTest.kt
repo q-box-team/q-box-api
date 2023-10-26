@@ -26,10 +26,10 @@ class AnswerQueryCtrlTest : WebClientDocsTest() {
             val questionId = 5L
             every { answerDao.findAllByQuestion(questionId) } returns
                     listOf(
-                        AnswerRes("내용1", questionId, MemberRes("aaa@bb.com", "닉넴1")),
-                        AnswerRes("내용2", questionId, MemberRes("bbb@bb.com", "닉넴2")),
-                        AnswerRes("내용3", questionId, MemberRes("hhh@bb.com", "닉넴3")),
-                        AnswerRes("내용4", questionId, MemberRes("jjj@bb.com", "닉넴4")),
+                        AnswerRes("내용1", questionId, MemberRes("aaa@bb.com", "닉넴1"), listOf()),
+                        AnswerRes("내용3", questionId, MemberRes("hhh@bb.com", "닉넴3"), listOf()),
+                        AnswerRes("내용4", questionId, MemberRes("jjj@bb.com", "닉넴4"), listOf()),
+                        AnswerRes("내용2", questionId, MemberRes("bbb@bb.com", "닉넴2"), listOf()),
                     )
 
             val params = LinkedMultiValueMap<String, String>()
