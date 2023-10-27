@@ -68,6 +68,7 @@ class AnswerDaoTest : DescribeSpec() {
                         AnswerComment("댓글4", members[2].email, answers[1].id),
                         AnswerComment("댓글5", members[1].email, answers[2].id),
                         AnswerComment("댓글6", members[3].email, answers[2].id),
+                        AnswerComment("댓글7", members[3].email, answers[7].id),
                     )
                 )
 
@@ -79,11 +80,18 @@ class AnswerDaoTest : DescribeSpec() {
                 result.size shouldBe 5
                 result.map { it.content } shouldContainAll listOf("내용1", "내용2", "내용3", "내용4", "내용5")
             }
+
+            it("answer에 해당하는 댓글들을 조회한다.") {
+                val result = answerDao.findAllByQuestion(targetQuestion)
+                result.size shouldBe 5
+                result[0].comments.map { it.content }.containsAll(listOf("댓글1","댓글2", "댓글3", "댓글4"))
+            }
         }
 
         afterEach {
             memberRepo.deleteAll()
             answerRepo.deleteAll()
+            answerCommentRepo.deleteAll()
         }
     }
 }
