@@ -1,0 +1,42 @@
+server:
+  servlet:
+    context-path: /api
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+  security:
+    allow-origins: "http://localhost:3000"
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "asdfasdf"
+    password: "asdfasdf"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+logging:
+  slack:
+    webhook-uri: dsafadsf
+  config: classpath:logback-spring.xml
