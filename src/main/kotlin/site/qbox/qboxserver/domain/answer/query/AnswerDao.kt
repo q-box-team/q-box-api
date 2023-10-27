@@ -1,13 +1,13 @@
 package site.qbox.qboxserver.domain.answer.query
 
-import com.querydsl.core.group.GroupBy
+import com.querydsl.core.group.GroupBy.groupBy
+import com.querydsl.core.group.GroupBy.list
 import com.querydsl.jpa.impl.JPAQueryFactory
+import site.qbox.qboxserver.domain.answer.command.entity.AnswerId
 import site.qbox.qboxserver.domain.answer.command.entity.QAnswer.answer
 import site.qbox.qboxserver.domain.answer.command.entity.QAnswerComment.answerComment
-import site.qbox.qboxserver.domain.answer.query.dto.AnswerRes
-import site.qbox.qboxserver.domain.answer.query.dto.QAnswerCommentRes
-import site.qbox.qboxserver.domain.answer.query.dto.QAnswerRes
-import site.qbox.qboxserver.domain.member.command.entity.QMember
+import site.qbox.qboxserver.domain.answer.query.dto.*
+import site.qbox.qboxserver.domain.member.command.entity.QMember.member
 import site.qbox.qboxserver.domain.member.query.dto.QMemberRes
 import site.qbox.qboxserver.global.annotation.QueryService
 
@@ -16,29 +16,44 @@ class AnswerDao(
     private val queryFactory: JPAQueryFactory,
 ) {
     fun findAllByQuestion(questionId: Long): List<AnswerRes> {
-        val answerWriter = QMember.member
-        val commentWriter = QMember.member
-        return queryFactory
-            .select(
-                QAnswerRes(
-                    answer.content,
-                    answer.id.questionId,
-                    QMemberRes(answerWriter.email, answerWriter.nickname),
-                    GroupBy.list(
+        val comments = getCommentsGroup(questionId)
+        val summary = getSummary(questionId)
+
+        return mapToRes(summary, comments)
+
+    }
+
+    private fun getCommentsGroup(questionId: Long): MutableMap<AnswerId, MutableList<AnswerCommentRes>> =
+        queryFactory.from(answerComment)
+            .where(answerComment.answer.questionId.eq(questionId))
+            .join(member).on(answerComment.commentWriterId.eq(member.email))
+            .transform(
+                groupBy(answerComment.answer).`as`(
+                    list(
                         QAnswerCommentRes(
                             answerComment.id,
                             answerComment.content,
-                            QMemberRes(commentWriter.email, commentWriter.nickname)
-                        )
-                    )
-                )
-            )
+                            QMemberRes(member.email, member.nickname)))))
+
+    private fun getSummary(questionId: Long): MutableList<AnswerSummary> =
+        queryFactory.select(
+            QAnswerSummary(
+                answer.content,
+                answer.id.questionId,
+                QMemberRes(member.email, member.nickname)
+            ))
             .from(answer)
             .where(answer.id.questionId.eq(questionId))
-            .leftJoin(answerComment).on(answerComment.answer.eq(answer.id))
-            .join(answerWriter).on(answer.id.writerId.eq(answerWriter.email))
-            .join(commentWriter).on(answerComment.commentWriterId.eq(commentWriter.email))
-            .groupBy(answer.id)
+            .join(member).on(answer.id.writerId.eq(member.email))
             .fetch()
+
+    private fun mapToRes(
+        summary: MutableList<AnswerSummary>,
+        comments: MutableMap<AnswerId, MutableList<AnswerCommentRes>>
+    ) = summary.map {
+        AnswerRes(it, comments[getAnswerId(it)] ?: emptyList())
     }
+
+    private fun getAnswerId(it: AnswerSummary) =
+        AnswerId(it.questionId, it.writer.email)
 }

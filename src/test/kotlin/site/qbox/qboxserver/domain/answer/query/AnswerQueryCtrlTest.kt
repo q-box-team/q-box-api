@@ -11,6 +11,7 @@ import org.springframework.restdocs.request.RequestDocumentation.parameterWithNa
 import org.springframework.restdocs.request.RequestDocumentation.queryParameters
 import org.springframework.util.LinkedMultiValueMap
 import site.qbox.qboxserver.config.WebClientDocsTest
+import site.qbox.qboxserver.domain.answer.query.dto.AnswerCommentRes
 import site.qbox.qboxserver.domain.answer.query.dto.AnswerRes
 import site.qbox.qboxserver.domain.member.query.dto.MemberRes
 
@@ -26,10 +27,21 @@ class AnswerQueryCtrlTest : WebClientDocsTest() {
             val questionId = 5L
             every { answerDao.findAllByQuestion(questionId) } returns
                     listOf(
-                        AnswerRes("내용1", questionId, MemberRes("aaa@bb.com", "닉넴1"), listOf()),
-                        AnswerRes("내용3", questionId, MemberRes("hhh@bb.com", "닉넴3"), listOf()),
-                        AnswerRes("내용4", questionId, MemberRes("jjj@bb.com", "닉넴4"), listOf()),
-                        AnswerRes("내용2", questionId, MemberRes("bbb@bb.com", "닉넴2"), listOf()),
+                        AnswerRes("내용1", questionId, MemberRes("aaa@bb.com", "닉넴1"), listOf(
+                            AnswerCommentRes(1, "댓글1",MemberRes("kkk@bb.com", "댓글작성자")),
+                            AnswerCommentRes(2, "댓글2",MemberRes("kkk2@bb.com", "댓글작성자2"))
+                        )),
+                        AnswerRes("내용3", questionId, MemberRes("hhh@bb.com", "닉넴3"), listOf(
+                            AnswerCommentRes(3, "댓글1",MemberRes("kkk@bb.com", "댓글작성자")),
+                            AnswerCommentRes(4, "댓글2",MemberRes("kkk2@bb.com", "댓글작성자2"))
+                        )),
+                        AnswerRes("내용4", questionId, MemberRes("jjj@bb.com", "닉넴4"), listOf(
+                            AnswerCommentRes(5, "댓글1",MemberRes("kkk@bb.com", "댓글작성자")),
+                            AnswerCommentRes(6, "댓글2",MemberRes("kkk2@bb.com", "댓글작성자2"))
+                        )),
+                        AnswerRes("내용2", questionId, MemberRes("bbb@bb.com", "닉넴2"), listOf(
+                            AnswerCommentRes(7, "댓글1",MemberRes("kkk@bb.com", "댓글작성자"))
+                        )),
                     )
 
             val params = LinkedMultiValueMap<String, String>()
@@ -48,7 +60,12 @@ class AnswerQueryCtrlTest : WebClientDocsTest() {
                         fieldWithPath("[].questionId").type(JsonFieldType.NUMBER).description("question ID"),
                         fieldWithPath("[].writer.email").type(JsonFieldType.STRING).description("작성자 email"),
                         fieldWithPath("[].writer.nickname").type(JsonFieldType.STRING).description("작성자 Nickname"),
-                    )
+                        fieldWithPath("[].comments.[].id").type(JsonFieldType.NUMBER).description("댓글 ID").optional(),
+                        fieldWithPath("[].comments.[].content").type(JsonFieldType.STRING).description("댓글 내용").optional(),
+                        fieldWithPath("[].comments.[].content").type(JsonFieldType.STRING).description("댓글 내용").optional(),
+                        fieldWithPath("[].comments.[].writer.email").type(JsonFieldType.STRING).description("댓글 작성자 email").optional(),
+                        fieldWithPath("[].comments.[].writer.nickname").type(JsonFieldType.STRING).description("댓글 작성자 Nickname").optional(),
+                        )
                 )
             )
         }

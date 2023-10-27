@@ -7,6 +7,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import site.qbox.qboxserver.domain.answer.command.dto.CreateAnswerCommentReq
 import site.qbox.qboxserver.domain.answer.command.dto.CreateAnswerReq
 import site.qbox.qboxserver.domain.answer.command.entity.AnswerId
 
@@ -17,6 +18,8 @@ class AnswerSvcTest : DescribeSpec() {
 
     @Autowired
     lateinit var answerRepo: AnswerRepo
+    @Autowired
+    lateinit var answerCommentRepo: AnswerCommentRepo
 
     @Autowired
     lateinit var answerSvc: AnswerSvc
@@ -35,6 +38,25 @@ class AnswerSvcTest : DescribeSpec() {
             result.content shouldBe req.content
             result.id.questionId shouldBe question
             result.id.writerId shouldBe writer
+        }
+
+        it("answer comment 생성을 수행한다") {
+            val content = "댓글내용"
+            val req =  CreateAnswerCommentReq(AnswerId(4, "aaa@bb.com"), content)
+
+            answerSvc.addAnswer(req, "댓글작성자")
+            answerSvc.addAnswer(req, "댓글작성자")
+            answerSvc.addAnswer(req, "댓글작성자")
+
+            val result = answerCommentRepo.findAll()
+
+            result.size shouldBe 3
+            result.map { it.content }.containsAll(listOf(content, content, content))
+        }
+
+        afterEach {
+            answerRepo.deleteAll()
+            answerCommentRepo.deleteAll()
         }
     }
 }
