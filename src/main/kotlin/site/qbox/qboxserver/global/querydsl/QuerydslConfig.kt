@@ -1,5 +1,6 @@
 package site.qbox.qboxserver.global.querydsl
 
+import com.querydsl.jpa.JPQLTemplates
 import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.persistence.EntityManager
 
@@ -12,6 +13,6 @@ class QuerydslConfig(
 ) {
     @Bean
     fun querydsl(): JPAQueryFactory {
-        return JPAQueryFactory(em)
+        return JPAQueryFactory(JPQLTemplates.DEFAULT, em)
     }
 }

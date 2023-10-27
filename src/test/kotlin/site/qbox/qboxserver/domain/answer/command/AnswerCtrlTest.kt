@@ -8,7 +8,9 @@ import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
 import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import site.qbox.qboxserver.config.WebClientDocsTest
+import site.qbox.qboxserver.domain.answer.command.dto.CreateAnswerCommentReq
 import site.qbox.qboxserver.domain.answer.command.dto.CreateAnswerReq
+import site.qbox.qboxserver.domain.answer.command.entity.AnswerId
 
 @WebMvcTest(AnswerCtrl::class)
 @DisplayName("AnswerCtrl")
@@ -29,6 +31,23 @@ class AnswerCtrlTest : WebClientDocsTest() {
                     requestFields(
                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용"),
                         fieldWithPath("question").type(JsonFieldType.NUMBER).description("관련 Question ID"),
+                    ))
+            )
+        }
+
+        it("answer에 대한 댓글을 생성한다.") {
+            val req = CreateAnswerCommentReq(AnswerId(4, "aaa@bb.com"), "댓글내용")
+
+            val action = performPost("/answers/comments", req)
+
+            action.andExpect(status().isCreated)
+
+            action.andDo(
+                print("create-answer-comment",
+                    requestFields(
+                        fieldWithPath("answer.questionId").type(JsonFieldType.NUMBER).description("답변의 Question ID"),
+                        fieldWithPath("answer.writerId").type(JsonFieldType.STRING).description("답변 작성자 email"),
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("댓글 내용"),
                     ))
             )
         }
