@@ -1,24 +1,29 @@
 package site.qbox.qboxserver.domain.member.command.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
 import org.springframework.security.crypto.password.PasswordEncoder
 import site.qbox.qboxserver.domain.member.command.exception.NotMatchPasswordException
+import site.qbox.qboxserver.domain.member.email.entity.Email
 import site.qbox.qboxserver.global.entity.BaseEntity
 
 @Entity
 class Member(
-    @Id val email: String,
+    @EmbeddedId val email: Email,
     @Column(nullable = false, unique = true) var nickname: String,
     @Column(nullable = false) var password: String,
-    passwordEncoder: PasswordEncoder,
-) : BaseEntity() {
+    @Column(nullable = false) var departId: Long,
     val role: Set<Role> = setOf(Role.USER)
+) : BaseEntity() {
+    constructor(
+        email: String,
+        nickname: String,
+        rawPassword: String,
+        departId: Long,
+        passwordEncoder: PasswordEncoder
+    ) : this(Email(email), nickname, passwordEncoder.encode(rawPassword), departId)
 
-    init {
-        this.password = passwordEncoder.encode(password)
-    }
 
     fun changePassword(beforePassword: String, newPassword: String, passwordEncoder: PasswordEncoder) {
         if (!passwordEncoder.matches(beforePassword, this.password)) {
@@ -32,5 +37,7 @@ class Member(
     }
 
     val emailDomain: String
-        get() = email.split("@")[1]
+        get() = email.domain
+    val id: String
+        get() = email.email
 }
