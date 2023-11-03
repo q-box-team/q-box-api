@@ -1,9 +1,9 @@
 package site.qbox.qboxserver.domain.lecture.command
 
+import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
-import io.kotest.core.spec.DisplayName
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import site.qbox.qboxserver.domain.lecture.command.dto.CreateLectureReq
@@ -33,6 +33,10 @@ class LectureSvcTest : DescribeSpec() {
             savedLecture.name shouldBe req.name
             savedLecture.id.code shouldBe req.code
             savedLecture.id.departId shouldBe req.departId
+        }
+
+        afterEach {
+            lectureRepo.deleteAll()
         }
     }
 }

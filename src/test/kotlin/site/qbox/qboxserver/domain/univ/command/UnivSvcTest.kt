@@ -16,6 +16,9 @@ class UnivSvcTest : DescribeSpec() {
     @Autowired
     lateinit var univSvc: UnivSvc
 
+    @Autowired
+    lateinit var univRepo: UnivRepo
+
     init {
         it("univ 생성을 수행한다") {
             val req = CreateUnivReq("test.ac.kr", "테스트대학교")
@@ -23,6 +26,10 @@ class UnivSvcTest : DescribeSpec() {
             val result = univSvc.create(req)
 
             result.id.shouldNotBeNull()
+        }
+
+        afterEach {
+            univRepo.deleteAll()
         }
     }
 }

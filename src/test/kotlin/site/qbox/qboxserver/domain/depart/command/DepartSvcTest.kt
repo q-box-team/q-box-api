@@ -16,6 +16,9 @@ class DepartSvcTest : DescribeSpec() {
     @Autowired
     lateinit var departSvc: DepartSvc
 
+    @Autowired
+    lateinit var departRepo: DepartRepo
+
 
     init {
         it("Depart 생성을 수행한다.") {
@@ -24,6 +27,10 @@ class DepartSvcTest : DescribeSpec() {
             val result = departSvc.create(req)
 
             result.id.shouldNotBeNull()
+        }
+
+        afterEach {
+            departRepo.deleteAll()
         }
     }
 }

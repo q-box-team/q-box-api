@@ -1,21 +1,22 @@
 package site.qbox.qboxserver.domain.member.command.entity
 
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.core.spec.DisplayName
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import site.qbox.qboxserver.domain.member.command.exception.NotMatchPasswordException
+import site.qbox.qboxserver.fixture.member.MemberFixture
 
 
 @DisplayName("member")
 class MemberTest : DescribeSpec({
-    val initPassword = "adsf"
-    val emailDomain = "tukorea.ac.kr"
+    val initPassword = MemberFixture.members[0].password
+    val emailDomain = MemberFixture.members[0].emailDomain
     lateinit var member: Member
-    val passwordEncoder = BCryptPasswordEncoder()
+    val passwordEncoder = NoOpPasswordEncoder.getInstance()
     beforeEach {
-        member = Member("phj@${emailDomain}", "PADO", initPassword, passwordEncoder)
+        member = MemberFixture.members[0]
     }
 
     describe("비밀번호 변경을") {

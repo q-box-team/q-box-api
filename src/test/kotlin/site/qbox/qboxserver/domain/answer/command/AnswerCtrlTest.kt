@@ -33,6 +33,7 @@ class AnswerCtrlTest : WebClientDocsTest() {
                         fieldWithPath("question").type(JsonFieldType.NUMBER).description("관련 Question ID"),
                     ))
             )
+
         }
 
         it("answer에 대한 댓글을 생성한다.") {
@@ -52,5 +53,5 @@ class AnswerCtrlTest : WebClientDocsTest() {
             )
         }
     }
-
 }
+
