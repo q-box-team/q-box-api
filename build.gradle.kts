@@ -59,6 +59,8 @@ dependencies {
     //test container
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("com.redis.testcontainers:testcontainers-redis-junit:1.6.4")
+
 
     // rest docs
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
@@ -154,7 +156,8 @@ koverReport {
         excludes {
             classes("**.QboxServerApplicationKt")
             classes("**.**Config")
-            classes("**.Mail**")
+            classes("**.**Query")
+            classes("site.qbox.qboxserver.domain.member.email.svc.MailSvc")
             classes("**.dto.**")
         }
     }
