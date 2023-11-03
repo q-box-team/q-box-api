@@ -38,6 +38,8 @@ spring:
       url: redis://localhost:6379
 logging:
   slack:
-    webhook-uri: ${SLACK_URL}
+    webhook-uri: http://localhost:1234
   config: classpath:logback-spring.xml
 
+service:
+  url: http://localhost:5172
