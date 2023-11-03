@@ -45,6 +45,24 @@ include::{snippets}/find-all-departs/http-request.adoc[]
 include::{snippets}/find-all-departs/http-response.adoc[]
 include::{snippets}/find-all-departs/response-fields.adoc[]
 
+= email
+
+== email 등록
+=== HTTP request
+include::{snippets}/register-email/http-request.adoc[]
+include::{snippets}/register-email/request-fields.adoc[]
+
+=== HTTP response
+include::{snippets}/register-email/http-response.adoc[]
+
+== email 키 인증
+=== HTTP request
+include::{snippets}/authenticate-email/http-request.adoc[]
+include::{snippets}/authenticate-email/query-parameters.adoc[]
+
+=== HTTP response
+include::{snippets}/authenticate-email/http-response.adoc[]
+
 = lectures
 
 == 강의 생성
@@ -57,7 +75,6 @@ include::{snippets}/create-lecture/request-fields.adoc[]
 === HTTP response
 
 include::{snippets}/create-lecture/http-response.adoc[]
-include::{snippets}/create-lecture/response-fields.adoc[]
 
 == 강의 전체 조회
 
