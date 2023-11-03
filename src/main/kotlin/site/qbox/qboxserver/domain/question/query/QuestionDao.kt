@@ -6,7 +6,7 @@ import site.qbox.qboxserver.domain.lecture.command.entity.LectureId
 import site.qbox.qboxserver.domain.lecture.command.entity.QLecture.lecture
 import site.qbox.qboxserver.domain.lecture.query.dto.QLectureRes
 import site.qbox.qboxserver.domain.member.command.entity.QMember.member
-import site.qbox.qboxserver.domain.member.query.dto.QMemberRes
+import site.qbox.qboxserver.domain.member.query.MemberQuery
 import site.qbox.qboxserver.domain.question.command.entity.QQuestion.question
 import site.qbox.qboxserver.domain.question.query.dto.QQuestionRes
 import site.qbox.qboxserver.domain.question.query.dto.QQuestionSummary
@@ -23,10 +23,11 @@ class QuestionDao (
             .select(QQuestionSummary(
                 question.id,
                 question.title,
-                QMemberRes(member.email, member.nickname)))
+                MemberQuery.summary
+                ))
             .from(question)
             .where(question.lecture.eq(LectureId(code, depart)))
-            .join(member).on(question.writerId.eq(member.email))
+            .join(member).on(question.writerId.eq(MemberQuery.id))
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
             .fetch()
@@ -42,11 +43,11 @@ class QuestionDao (
                     lecture.name,
                     lecture.id.code,
                     lecture.id.departId),
-                QMemberRes(member.email, member.nickname)
+                MemberQuery.summary
             ))
             .from(question)
             .where(question.id.eq(id))
-            .join(member).on(question.writerId.eq(member.email))
+            .join(member).on(question.writerId.eq(MemberQuery.id))
             .join(lecture).on(question.lecture.eq(lecture.id))
             .fetchFirst()
     }
