@@ -9,7 +9,6 @@ import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.security.crypto.password.PasswordEncoder
 import site.qbox.qboxserver.domain.answer.command.AnswerCommentRepo
 import site.qbox.qboxserver.domain.answer.command.AnswerRepo
 import site.qbox.qboxserver.domain.answer.command.entity.Answer
@@ -21,7 +20,8 @@ import site.qbox.qboxserver.domain.answer.query.dto.QAnswerCommentRes
 import site.qbox.qboxserver.domain.member.command.MemberRepo
 import site.qbox.qboxserver.domain.member.command.entity.Member
 import site.qbox.qboxserver.domain.member.command.entity.QMember.member
-import site.qbox.qboxserver.domain.member.query.dto.QMemberRes
+import site.qbox.qboxserver.domain.member.query.MemberQuery
+import site.qbox.qboxserver.fixture.member.MemberFixture
 
 @DisplayName("querydsl-answer")
 @SpringBootTest
@@ -40,8 +40,6 @@ class AnswerDaoQueryDslTest : DescribeSpec() {
     @Autowired
     lateinit var memberRepo: MemberRepo
 
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
 
     lateinit var members: List<Member>
     lateinit var answers: List<Answer>
@@ -51,37 +49,31 @@ class AnswerDaoQueryDslTest : DescribeSpec() {
         describe("querydsl 에서") {
             beforeEach {
                 members = memberRepo.saveAll(
-                    listOf(
-                        Member("aaa@ccc.ac.kr", "n1", "p1", passwordEncoder),
-                        Member("bbb@ccc.ac.kr", "n2", "p2", passwordEncoder),
-                        Member("fff@ccc.ac.kr", "n3", "p4", passwordEncoder),
-                        Member("ggg@ccc.ac.kr", "n4", "32", passwordEncoder),
-                        Member("hhh@ccc.ac.kr", "n5", "42", passwordEncoder),
-                    )
+                    MemberFixture.members
                 )
 
                 answers = answerRepo.saveAll(
                     listOf(
-                        Answer("내용1", AnswerId(1, members[0].email)),
-                        Answer("내용2", AnswerId(1, members[1].email)),
-                        Answer("내용3", AnswerId(1, members[2].email)),
-                        Answer("내용4", AnswerId(1, members[3].email)),
-                        Answer("내용5", AnswerId(1, members[4].email)),
-                        Answer("내용6", AnswerId(2, members[0].email)),
-                        Answer("내용7", AnswerId(2, members[1].email)),
-                        Answer("내용8", AnswerId(2, members[2].email)),
+                        Answer("내용1", AnswerId(1, members[0].id)),
+                        Answer("내용2", AnswerId(1, members[1].id)),
+                        Answer("내용3", AnswerId(1, members[2].id)),
+                        Answer("내용4", AnswerId(1, members[3].id)),
+                        Answer("내용5", AnswerId(1, members[4].id)),
+                        Answer("내용6", AnswerId(2, members[0].id)),
+                        Answer("내용7", AnswerId(2, members[1].id)),
+                        Answer("내용8", AnswerId(2, members[2].id)),
                     )
                 )
 
                 answerComments = answerCommentRepo.saveAll(
                     listOf(
-                        AnswerComment("댓글1", members[0].email, answers[1].id),
-                        AnswerComment("댓글2", members[1].email, answers[1].id),
-                        AnswerComment("댓글3", members[1].email, answers[1].id),
-                        AnswerComment("댓글4", members[2].email, answers[1].id),
-                        AnswerComment("댓글5", members[1].email, answers[2].id),
-                        AnswerComment("댓글6", members[3].email, answers[2].id),
-                        AnswerComment("댓글7", members[3].email, answers[7].id),
+                        AnswerComment("댓글1", members[0].id, answers[1].id),
+                        AnswerComment("댓글2", members[1].id, answers[1].id),
+                        AnswerComment("댓글3", members[1].id, answers[1].id),
+                        AnswerComment("댓글4", members[2].id, answers[1].id),
+                        AnswerComment("댓글5", members[1].id, answers[2].id),
+                        AnswerComment("댓글6", members[3].id, answers[2].id),
+                        AnswerComment("댓글7", members[3].id, answers[7].id),
                     )
                 )
             }
@@ -89,13 +81,13 @@ class AnswerDaoQueryDslTest : DescribeSpec() {
             it("question별 answer comment 조회를 수행한다.") {
                 val result = queryFactory.from(answerComment)
                     .where(answerComment.answer.questionId.eq(1))
-                    .join(member).on(answerComment.commentWriterId.eq(member.email))
+                    .join(member).on(answerComment.commentWriterId.eq(MemberQuery.id))
                     .transform(
                         groupBy(answerComment.answer).`as`(list(
                             QAnswerCommentRes(
                                 answerComment.id,
                                 answerComment.content,
-                                QMemberRes(member.email, member.nickname)
+                                MemberQuery.summary
                             )
                         ))
                     )

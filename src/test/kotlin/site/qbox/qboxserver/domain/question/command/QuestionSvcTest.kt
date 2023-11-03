@@ -16,6 +16,8 @@ class QuestionSvcTest : DescribeSpec() {
 
     @Autowired
     lateinit var questionSvc: QuestionSvc
+    @Autowired
+    lateinit var questionRepo: QuestionRepo
 
     init {
         it("question 생성을 수행한다") {
@@ -24,6 +26,10 @@ class QuestionSvcTest : DescribeSpec() {
             val result = questionSvc.create(req, "토르")
 
             result.id.shouldNotBeNull()
+        }
+
+        afterEach {
+            questionRepo.deleteAll()
         }
     }
 }

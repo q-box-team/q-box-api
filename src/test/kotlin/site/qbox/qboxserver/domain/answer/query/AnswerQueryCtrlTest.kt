@@ -13,7 +13,7 @@ import org.springframework.util.LinkedMultiValueMap
 import site.qbox.qboxserver.config.WebClientDocsTest
 import site.qbox.qboxserver.domain.answer.query.dto.AnswerCommentRes
 import site.qbox.qboxserver.domain.answer.query.dto.AnswerRes
-import site.qbox.qboxserver.domain.member.query.dto.MemberRes
+import site.qbox.qboxserver.domain.member.query.dto.MemberSummary
 
 @WebMvcTest(AnswerQueryCtrl::class)
 @DisplayName("AnswerQueryCtrl")
@@ -27,20 +27,20 @@ class AnswerQueryCtrlTest : WebClientDocsTest() {
             val questionId = 5L
             every { answerDao.findAllByQuestion(questionId) } returns
                     listOf(
-                        AnswerRes("내용1", questionId, MemberRes("aaa@bb.com", "닉넴1"), listOf(
-                            AnswerCommentRes(1, "댓글1",MemberRes("kkk@bb.com", "댓글작성자")),
-                            AnswerCommentRes(2, "댓글2",MemberRes("kkk2@bb.com", "댓글작성자2"))
+                        AnswerRes("내용1", questionId, MemberSummary("aaa@bb.com", "닉넴1"), listOf(
+                            AnswerCommentRes(1, "댓글1",MemberSummary("kkk@bb.com", "댓글작성자")),
+                            AnswerCommentRes(2, "댓글2",MemberSummary("kkk2@bb.com", "댓글작성자2"))
                         )),
-                        AnswerRes("내용3", questionId, MemberRes("hhh@bb.com", "닉넴3"), listOf(
-                            AnswerCommentRes(3, "댓글1",MemberRes("kkk@bb.com", "댓글작성자")),
-                            AnswerCommentRes(4, "댓글2",MemberRes("kkk2@bb.com", "댓글작성자2"))
+                        AnswerRes("내용3", questionId, MemberSummary("hhh@bb.com", "닉넴3"), listOf(
+                            AnswerCommentRes(3, "댓글1",MemberSummary("kkk@bb.com", "댓글작성자")),
+                            AnswerCommentRes(4, "댓글2",MemberSummary("kkk2@bb.com", "댓글작성자2"))
                         )),
-                        AnswerRes("내용4", questionId, MemberRes("jjj@bb.com", "닉넴4"), listOf(
-                            AnswerCommentRes(5, "댓글1",MemberRes("kkk@bb.com", "댓글작성자")),
-                            AnswerCommentRes(6, "댓글2",MemberRes("kkk2@bb.com", "댓글작성자2"))
+                        AnswerRes("내용4", questionId, MemberSummary("jjj@bb.com", "닉넴4"), listOf(
+                            AnswerCommentRes(5, "댓글1",MemberSummary("kkk@bb.com", "댓글작성자")),
+                            AnswerCommentRes(6, "댓글2",MemberSummary("kkk2@bb.com", "댓글작성자2"))
                         )),
-                        AnswerRes("내용2", questionId, MemberRes("bbb@bb.com", "닉넴2"), listOf(
-                            AnswerCommentRes(7, "댓글1",MemberRes("kkk@bb.com", "댓글작성자"))
+                        AnswerRes("내용2", questionId, MemberSummary("bbb@bb.com", "닉넴2"), listOf(
+                            AnswerCommentRes(7, "댓글1",MemberSummary("kkk@bb.com", "댓글작성자"))
                         )),
                     )
 

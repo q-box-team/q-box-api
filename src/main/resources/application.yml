@@ -25,16 +25,24 @@ spring:
           timeout: 5000
           starttls:
             enable: true
+
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${JPA_DDL_AUTO}
     properties:
       hibernate:
         format_sql: true
         show_sql: true
+
+  data:
+    redis:
+      url: ${REDIS_URL}
+
 logging:
   slack:
     webhook-uri: ${SLACK_URL}
   config: classpath:logback-spring.xml
 
+service:
+  url: ${SERVICE_URL}

@@ -40,3 +40,6 @@ logging:
   slack:
     webhook-uri: dsafadsf
   config: classpath:logback-spring.xml
+  
+service:
+  url: https://aaa.bb.com

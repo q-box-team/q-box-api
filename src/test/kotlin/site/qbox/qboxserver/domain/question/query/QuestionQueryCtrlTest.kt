@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.util.LinkedMultiValueMap
 import site.qbox.qboxserver.config.WebClientDocsTest
 import site.qbox.qboxserver.domain.lecture.query.dto.LectureRes
-import site.qbox.qboxserver.domain.member.query.dto.MemberRes
+import site.qbox.qboxserver.domain.member.query.dto.MemberSummary
 import site.qbox.qboxserver.domain.question.query.dto.QuestionRes
 import site.qbox.qboxserver.domain.question.query.dto.QuestionSummary
 
@@ -27,7 +27,7 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
         it("Lecture를 통한 목록 조회를 수행한다") {
             val code = "code"
             val depart = 5L
-            val writer = MemberRes("aaa@bb.com", "닉넴")
+            val writer = MemberSummary("aaa@bb.com", "닉넴")
             every { questionDao.findAllByLecture(code, depart, any()) } returns
                     listOf(
                         QuestionSummary(1, "제목1", writer),
@@ -72,7 +72,7 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                 "제목",
                 "내용",
                 LectureRes("과목명", "과목코드", 4),
-                MemberRes("aaa@bb.com", "닉넴")
+                MemberSummary("aaa@bb.com", "닉넴")
             )
 
             val action = performGet("/questions/{id}", id.toString())

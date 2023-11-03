@@ -8,7 +8,7 @@ import site.qbox.qboxserver.domain.answer.command.entity.QAnswer.answer
 import site.qbox.qboxserver.domain.answer.command.entity.QAnswerComment.answerComment
 import site.qbox.qboxserver.domain.answer.query.dto.*
 import site.qbox.qboxserver.domain.member.command.entity.QMember.member
-import site.qbox.qboxserver.domain.member.query.dto.QMemberRes
+import site.qbox.qboxserver.domain.member.query.MemberQuery
 import site.qbox.qboxserver.global.annotation.QueryService
 
 @QueryService
@@ -23,29 +23,36 @@ class AnswerDao(
 
     }
 
-    private fun getCommentsGroup(questionId: Long): MutableMap<AnswerId, MutableList<AnswerCommentRes>> =
-        queryFactory.from(answerComment)
+    private fun getCommentsGroup(questionId: Long): MutableMap<AnswerId, MutableList<AnswerCommentRes>> {
+        return queryFactory.from(answerComment)
             .where(answerComment.answer.questionId.eq(questionId))
-            .join(member).on(answerComment.commentWriterId.eq(member.email))
+            .join(member).on(answerComment.commentWriterId.eq(MemberQuery.id))
             .transform(
                 groupBy(answerComment.answer).`as`(
                     list(
                         QAnswerCommentRes(
                             answerComment.id,
                             answerComment.content,
-                            QMemberRes(member.email, member.nickname)))))
+                            MemberQuery.summary
+                        )
+                    )
+                )
+            )
+    }
 
-    private fun getSummary(questionId: Long): MutableList<AnswerSummary> =
-        queryFactory.select(
+    private fun getSummary(questionId: Long): MutableList<AnswerSummary> {
+        return queryFactory.select(
             QAnswerSummary(
                 answer.content,
                 answer.id.questionId,
-                QMemberRes(member.email, member.nickname)
-            ))
+                MemberQuery.summary
+            )
+        )
             .from(answer)
             .where(answer.id.questionId.eq(questionId))
-            .join(member).on(answer.id.writerId.eq(member.email))
+            .join(member).on(answer.id.writerId.eq(MemberQuery.id))
             .fetch()
+    }
 
     private fun mapToRes(
         summary: MutableList<AnswerSummary>,

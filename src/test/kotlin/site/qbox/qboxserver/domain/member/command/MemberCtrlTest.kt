@@ -9,7 +9,6 @@ import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import site.qbox.qboxserver.config.WebClientDocsTest
 import site.qbox.qboxserver.domain.member.command.dto.SignUpReq
-import site.qbox.qboxserver.domain.member.command.svc.MemberSvc
 
 @WebMvcTest(MemberCtrl::class)
 @DisplayName("MemberCtrl")
@@ -19,7 +18,7 @@ class MemberCtrlTest : WebClientDocsTest() {
 
     init {
         it("회원가입 요청을 수행한다") {
-            val req = SignUpReq("aaa@bb.com", "nick")
+            val req = SignUpReq("aaa@bb.com", "nick", "password", 1L)
             val action = performPost("/members", req)
 
             action.andExpect(status().isCreated())
@@ -30,6 +29,8 @@ class MemberCtrlTest : WebClientDocsTest() {
                     requestFields(
                         fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+                        fieldWithPath("departId").type(JsonFieldType.NUMBER).description("학과 ID"),
                     )
                 )
             )
