@@ -3,6 +3,7 @@ package site.qbox.qboxserver.domain.member.email
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import site.qbox.qboxserver.domain.member.email.dto.CertifyKeyReq
 import site.qbox.qboxserver.domain.member.email.dto.RegisterEmailReq
 import site.qbox.qboxserver.domain.member.email.svc.EmailAuthenticationSvc
 
@@ -16,8 +17,8 @@ class EmailAuthenticationCtrl (
     fun register(@RequestBody @Valid req: RegisterEmailReq) =
         emailAuthenticationSvc.register(req)
 
-    @GetMapping
-    fun authenticate(key: String) =
-        emailAuthenticationSvc.authenticate(key)
+    @PostMapping("key")
+    fun authenticate(@RequestBody @Valid req : CertifyKeyReq) =
+        emailAuthenticationSvc.authenticate(req)
 
 }
