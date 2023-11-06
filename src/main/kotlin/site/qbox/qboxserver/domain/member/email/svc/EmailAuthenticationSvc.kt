@@ -2,6 +2,7 @@ package site.qbox.qboxserver.domain.member.email.svc
 
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import site.qbox.qboxserver.domain.member.email.dto.CertifyKeyReq
 import site.qbox.qboxserver.domain.member.email.dto.RegisterEmailReq
 import site.qbox.qboxserver.domain.member.email.dto.event.RegisteredEmailEvent
 import site.qbox.qboxserver.domain.member.email.entity.Email
@@ -25,8 +26,8 @@ class EmailAuthenticationSvc (
     private fun generateKey() : String =
         UUID.randomUUID().toString().substring(0, 8)
 
-    fun authenticate(key: String) {
-        val target = emailAuthKeyRepo.findById(key)
+    fun authenticate(req: CertifyKeyReq) {
+        val target = emailAuthKeyRepo.findById(req.key)
             .orElseThrow { EmailNotAuthenticatedException() }
         authenticationEmailRepo.save(Email(target.email))
     }

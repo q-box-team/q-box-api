@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.ApplicationEventPublisher
 import site.qbox.qboxserver.config.IntegrationTest
+import site.qbox.qboxserver.domain.member.email.dto.CertifyKeyReq
 import site.qbox.qboxserver.domain.member.email.dto.RegisterEmailReq
 import site.qbox.qboxserver.domain.member.email.exception.EmailNotAuthenticatedException
 import site.qbox.qboxserver.domain.member.email.infra.AuthenticatedEmailRepo
@@ -41,10 +42,11 @@ class EmailAuthenticationSvcTest : IntegrationTest() {
 
         describe("신규 등록이 되어 있을 때 ") {
             val email = "aaa@example.com"
-            var key = ""
+            lateinit var key : CertifyKeyReq
             beforeEach {
                 emailAuthenticationSvc.register(RegisterEmailReq(email))
-                key = emailAuthKeyRepo.findAll().toList()[0].key
+                val keyStr = emailAuthKeyRepo.findAll().toList()[0].key
+                key = CertifyKeyReq(keyStr)
             }
             context("key 인증 수행을") {
                 it("성공 시 인증 성공 목록에 추가한다.") {
@@ -54,7 +56,7 @@ class EmailAuthenticationSvcTest : IntegrationTest() {
 
                 it("수행 시 인증 실패 시 예외를 반환한다.") {
                     shouldThrow<EmailNotAuthenticatedException> {
-                        emailAuthenticationSvc.authenticate("whatthekey")
+                        emailAuthenticationSvc.authenticate(CertifyKeyReq("asdf"))
                     }
                 }
             }
