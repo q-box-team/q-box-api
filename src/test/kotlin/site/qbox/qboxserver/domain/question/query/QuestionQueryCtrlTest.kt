@@ -14,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap
 import site.qbox.qboxserver.config.WebClientDocsTest
 import site.qbox.qboxserver.domain.lecture.query.dto.LectureRes
 import site.qbox.qboxserver.domain.member.query.dto.MemberSummary
+import site.qbox.qboxserver.domain.question.query.dto.QuestionCondition
 import site.qbox.qboxserver.domain.question.query.dto.QuestionRes
 import site.qbox.qboxserver.domain.question.query.dto.QuestionSummary
 import java.time.LocalDateTime
@@ -25,11 +26,12 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
     lateinit var questionDao: QuestionDao
 
     init {
-        it("Lecture를 통한 목록 조회를 수행한다") {
+        it("목록 조회를 수행한다") {
             val code = "code"
             val depart = 5L
+            val condition = QuestionCondition("title", "body", "writerNick", code, depart)
             val writer = MemberSummary("aaa@bb.com", "닉넴")
-            every { questionDao.findAllByLecture(code, depart, any()) } returns
+            every { questionDao.findAllBy(condition, any()) } returns
                     listOf(
                         QuestionSummary(1, "제목1", writer, LocalDateTime.now()),
                         QuestionSummary(2, "제목2", writer, LocalDateTime.now()),
@@ -37,8 +39,11 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                         QuestionSummary(4, "제목4", writer, LocalDateTime.now()),
                     )
             val params = LinkedMultiValueMap<String, String>()
-            params["code"] = code
-            params["depart"] = depart.toString()
+            params["lectureCode"] = code
+            params["lectureDepart"] = depart.toString()
+            params["title"] = condition.title
+            params["body"] = condition.body
+            params["writerNickname"] =  condition.writerNickname
             params["size"] = "100"
             params["page"] = "0"
 
@@ -50,8 +55,11 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                 print(
                     "find-all-questions",
                     queryParameters(
-                        parameterWithName("code").description("강의 코드"),
-                        parameterWithName("depart").description("강의 해당 학과 ID"),
+                        parameterWithName("title").description("제목 포함 내용").optional(),
+                        parameterWithName("body").description("내용 포함 내용").optional(),
+                        parameterWithName("writerNickname").description("작성자 포함 내용").optional(),
+                        parameterWithName("lectureCode").description("강의 코드"),
+                        parameterWithName("lectureDepart").description("강의 해당 학과 ID"),
                         parameterWithName("page").description("page 번호"),
                         parameterWithName("size").description("페이지 당 보여줄 컨텐츠 수(default: 10)"),
                     ),
