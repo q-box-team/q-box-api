@@ -23,7 +23,8 @@ class QuestionDao (
             .select(QQuestionSummary(
                 question.id,
                 question.title,
-                MemberQuery.summary
+                MemberQuery.summary,
+                question.createdAt,
                 ))
             .from(question)
             .where(question.lecture.eq(LectureId(code, depart)))
@@ -43,8 +44,9 @@ class QuestionDao (
                     lecture.name,
                     lecture.id.code,
                     lecture.id.departId),
-                MemberQuery.summary
-            ))
+                MemberQuery.summary,
+                question.createdAt,
+                question.updatedAt))
             .from(question)
             .where(question.id.eq(id))
             .join(member).on(question.writerId.eq(MemberQuery.id))
