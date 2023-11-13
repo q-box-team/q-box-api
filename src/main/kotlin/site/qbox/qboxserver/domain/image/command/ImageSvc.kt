@@ -8,8 +8,10 @@ import java.util.*
 @CommandService
 class ImageSvc(
     private val imageRepo: ImageRepo,
+    private val imageValidator: ImageValidator,
 ) {
     fun save(file: MultipartFile): ImageRes {
+        imageValidator.validate(file)
         return ImageRes(imageRepo.save(file, generateName(file)))
     }
 
