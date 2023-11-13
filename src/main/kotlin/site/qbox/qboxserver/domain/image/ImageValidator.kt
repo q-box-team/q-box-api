@@ -1,8 +1,8 @@
-package site.qbox.qboxserver.domain.image.command
+package site.qbox.qboxserver.domain.image
 
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import site.qbox.qboxserver.domain.image.command.exception.NotAllowedImageException
+import site.qbox.qboxserver.domain.image.exception.NotAllowedImageException
 
 @Component
 class ImageValidator {

@@ -158,6 +158,7 @@ koverReport {
             classes("**.**Config")
             classes("**.**Query")
             classes("site.qbox.qboxserver.domain.member.email.svc.MailSvc")
+            classes("site.qbox.qboxserver.domain.image.local.LocalStorageImageRepo")
             classes("**.dto.**")
         }
     }

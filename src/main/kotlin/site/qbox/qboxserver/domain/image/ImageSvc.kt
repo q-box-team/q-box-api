@@ -1,7 +1,7 @@
-package site.qbox.qboxserver.domain.image.command
+package site.qbox.qboxserver.domain.image
 
 import org.springframework.web.multipart.MultipartFile
-import site.qbox.qboxserver.domain.image.command.dto.ImageRes
+import site.qbox.qboxserver.domain.image.dto.ImageRes
 import site.qbox.qboxserver.global.annotation.CommandService
 import java.util.*
 
