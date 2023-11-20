@@ -43,3 +43,7 @@ logging:
   
 service:
   url: https://aaa.bb.com
+
+local-storage:
+  directory: http://localhost/qbox/image/
+  url: http://localhost:5172

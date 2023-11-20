@@ -46,3 +46,7 @@ logging:
 
 service:
   url: ${SERVICE_URL}
+
+local-storage:
+  directory: ${LOCAL_STORAGE_DIRECTORY}
+  url: ${LOCAL_STORAGE_URL}
