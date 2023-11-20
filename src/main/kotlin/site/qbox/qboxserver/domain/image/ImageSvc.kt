@@ -19,5 +19,5 @@ class ImageSvc(
         "${UUID.randomUUID()}.${extractExtension(file)}"
 
     private fun extractExtension(file: MultipartFile): String =
-        file.originalFilename!!.substringAfterLast(".")
+        file.name.substringAfterLast(".")
 }
