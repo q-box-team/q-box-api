@@ -12,6 +12,7 @@ import site.qbox.qboxserver.domain.lecture.command.entity.Lecture
 import site.qbox.qboxserver.domain.member.command.MemberRepo
 import site.qbox.qboxserver.domain.question.command.QuestionRepo
 import site.qbox.qboxserver.domain.question.command.entity.Question
+import site.qbox.qboxserver.domain.question.query.dto.QuestionCondition
 import site.qbox.qboxserver.fixture.member.MemberFixture
 
 @SpringBootTest
@@ -44,16 +45,17 @@ class QuestionDaoTest : DescribeSpec() {
                 )
                 val questions = questionRepo.saveAll(
                     listOf(
-                        Question("제목0", "내용", lectures[0].id, members[0].id),
-                        Question("제목1", "내용", lectures[0].id, members[1].id),
-                        Question("제목2", "내용", lectures[0].id, members[0].id),
-                        Question("제목3", "내용", lectures[1].id, members[0].id),
-                        Question("제목4", "내용", lectures[1].id, members[0].id),
+                        Question("제목0", "내용0", lectures[0].id, members[0].id),
+                        Question("제목1", "내용1", lectures[0].id, members[1].id),
+                        Question("제목2", "내용2", lectures[0].id, members[0].id),
+                        Question("제목3", "내용3", lectures[1].id, members[0].id),
+                        Question("제목4", "내용4", lectures[1].id, members[0].id),
                     )
                 )
             }
             it("전체 목록을 조회한다") {
-                val result = questionDao.findAllByLecture("123", 1, PageRequest.of(0, 100))
+                val condition = QuestionCondition(lectureCode = "123", lectureDepart = 1)
+                val result = questionDao.findAllBy(condition, PageRequest.of(0, 100))
                 result.size shouldBe 3
             }
             it("Id를 통한 조회를 수행한다") {
@@ -64,6 +66,12 @@ class QuestionDaoTest : DescribeSpec() {
                 result.id shouldBe any.id
                 result.lecture.code shouldBe any.lecture.code
                 result.writer.email shouldBe any.writerId
+            }
+
+            it("filter를 통한 전체 목록을 조회한다") {
+                val condition = QuestionCondition(title="4", lectureCode = "456", lectureDepart = 1)
+                val result = questionDao.findAllBy(condition, PageRequest.of(0, 100))
+                result.size shouldBe 1
             }
         }
 

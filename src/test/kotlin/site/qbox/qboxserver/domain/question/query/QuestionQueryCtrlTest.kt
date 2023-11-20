@@ -14,8 +14,10 @@ import org.springframework.util.LinkedMultiValueMap
 import site.qbox.qboxserver.config.WebClientDocsTest
 import site.qbox.qboxserver.domain.lecture.query.dto.LectureRes
 import site.qbox.qboxserver.domain.member.query.dto.MemberSummary
+import site.qbox.qboxserver.domain.question.query.dto.QuestionCondition
 import site.qbox.qboxserver.domain.question.query.dto.QuestionRes
 import site.qbox.qboxserver.domain.question.query.dto.QuestionSummary
+import java.time.LocalDateTime
 
 @WebMvcTest(QuestionQueryCtrl::class)
 @DisplayName("QuestionQueryCtrl")
@@ -24,20 +26,24 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
     lateinit var questionDao: QuestionDao
 
     init {
-        it("Lecture를 통한 목록 조회를 수행한다") {
+        it("목록 조회를 수행한다") {
             val code = "code"
             val depart = 5L
+            val condition = QuestionCondition("title", "body", "writerNick", code, depart)
             val writer = MemberSummary("aaa@bb.com", "닉넴")
-            every { questionDao.findAllByLecture(code, depart, any()) } returns
+            every { questionDao.findAllBy(condition, any()) } returns
                     listOf(
-                        QuestionSummary(1, "제목1", writer),
-                        QuestionSummary(2, "제목2", writer),
-                        QuestionSummary(3, "제목3", writer),
-                        QuestionSummary(4, "제목4", writer),
+                        QuestionSummary(1, "제목1", writer, LocalDateTime.now()),
+                        QuestionSummary(2, "제목2", writer, LocalDateTime.now()),
+                        QuestionSummary(3, "제목3", writer, LocalDateTime.now()),
+                        QuestionSummary(4, "제목4", writer, LocalDateTime.now()),
                     )
             val params = LinkedMultiValueMap<String, String>()
-            params["code"] = code
-            params["depart"] = depart.toString()
+            params["lectureCode"] = code
+            params["lectureDepart"] = depart.toString()
+            params["title"] = condition.title
+            params["body"] = condition.body
+            params["writerNickname"] =  condition.writerNickname
             params["size"] = "100"
             params["page"] = "0"
 
@@ -49,8 +55,11 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                 print(
                     "find-all-questions",
                     queryParameters(
-                        parameterWithName("code").description("강의 코드"),
-                        parameterWithName("depart").description("강의 해당 학과 ID"),
+                        parameterWithName("title").description("제목 포함 내용").optional(),
+                        parameterWithName("body").description("내용 포함 내용").optional(),
+                        parameterWithName("writerNickname").description("작성자 포함 내용").optional(),
+                        parameterWithName("lectureCode").description("강의 코드"),
+                        parameterWithName("lectureDepart").description("강의 해당 학과 ID"),
                         parameterWithName("page").description("page 번호"),
                         parameterWithName("size").description("페이지 당 보여줄 컨텐츠 수(default: 10)"),
                     ),
@@ -59,6 +68,7 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                         fieldWithPath("[].title").type(JsonFieldType.STRING).description("제목"),
                         fieldWithPath("[].writer.email").type(JsonFieldType.STRING).description("작성자 email"),
                         fieldWithPath("[].writer.nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                        fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("작성 일자"),
                     )
                 )
 
@@ -72,26 +82,32 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                 "제목",
                 "내용",
                 LectureRes("과목명", "과목코드", 4),
-                MemberSummary("aaa@bb.com", "닉넴")
+                MemberSummary("aaa@bb.com", "닉넴"),
+                LocalDateTime.now(),
+                LocalDateTime.now()
             )
 
             val action = performGet("/questions/{id}", id.toString())
 
             action.andExpect(status().isOk)
 
-            action.andDo(print(
-                "find-questions-by-id",
-                responseFields(
-                    fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
-                    fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                    fieldWithPath("body").type(JsonFieldType.STRING).description("내용"),
-                    fieldWithPath("lecture.name").type(JsonFieldType.STRING).description("강의명"),
-                    fieldWithPath("lecture.code").type(JsonFieldType.STRING).description("강의 코드"),
-                    fieldWithPath("lecture.departId").type(JsonFieldType.NUMBER).description("해당 강의 학과 ID"),
-                    fieldWithPath("writer.email").type(JsonFieldType.STRING).description("작성자 이메일"),
-                    fieldWithPath("writer.nickname").type(JsonFieldType.STRING).description("작성지 닉네임"),
+            action.andDo(
+                print(
+                    "find-questions-by-id",
+                    responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+                        fieldWithPath("body").type(JsonFieldType.STRING).description("내용"),
+                        fieldWithPath("lecture.name").type(JsonFieldType.STRING).description("강의명"),
+                        fieldWithPath("lecture.code").type(JsonFieldType.STRING).description("강의 코드"),
+                        fieldWithPath("lecture.departId").type(JsonFieldType.NUMBER).description("해당 강의 학과 ID"),
+                        fieldWithPath("writer.email").type(JsonFieldType.STRING).description("작성자 이메일"),
+                        fieldWithPath("writer.nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("작성일자"),
+                        fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정일자"),
+                    )
                 )
-            ))
+            )
         }
 
     }
