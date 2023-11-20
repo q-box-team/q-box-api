@@ -43,3 +43,7 @@ logging:
 
 service:
   url: http://localhost:5172
+
+local-storage:
+  directory: http://localhost/qbox/image/
+  url: http://localhost:5172
