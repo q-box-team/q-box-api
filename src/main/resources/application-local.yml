@@ -47,3 +47,17 @@ service:
 local-storage:
   directory: http://localhost/qbox/image/
   url: http://localhost:5172
+
+
+management:
+  endpoints:
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: *
+    web:
+      exposure:
+        include: prometheus
+      base-path: /actuator
+  server:
+    port: 8081

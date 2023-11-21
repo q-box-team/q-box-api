@@ -50,3 +50,16 @@ service:
 local-storage:
   directory: ${LOCAL_STORAGE_DIRECTORY}
   url: ${LOCAL_STORAGE_URL}
+
+management:
+  endpoints:
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: *
+    web:
+      exposure:
+        include: prometheus
+      base-path: ${ACTUATOR_PATH}
+  server:
+    port: ${ACTUATOR_PORT}
