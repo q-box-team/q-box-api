@@ -21,6 +21,32 @@ include::{snippets}/create-answer/request-fields.adoc[]
 
 include::{snippets}/create-answer/http-response.adoc[]
 
+== 답변 목록 조회
+
+=== HTTP request
+
+include::{snippets}/find-all-answers/http-request.adoc[]
+include::{snippets}/find-all-answers/query-parameters.adoc[]
+
+=== HTTP response
+
+include::{snippets}/find-all-answers/http-response.adoc[]
+include::{snippets}/find-all-answers/response-fields.adoc[]
+
+
+= answer-comments
+== 답변 댓글 생성
+
+=== HTTP request
+
+include::{snippets}/create-answer-comment/http-request.adoc[]
+include::{snippets}/create-answer-comment/request-fields.adoc[]
+
+=== HTTP response
+
+include::{snippets}/create-answer/http-response.adoc[]
+
+
 = departs
 == 학과 생성
 
@@ -62,6 +88,16 @@ include::{snippets}/authenticate-email/query-parameters.adoc[]
 
 === HTTP response
 include::{snippets}/authenticate-email/http-response.adoc[]
+
+= image
+== image 생성
+=== HTTP request
+include::{snippets}/save-image/http-request.adoc[]
+include::{snippets}/save-image/request-fields.adoc[]
+
+=== HTTP response
+include::{snippets}/save-image/http-response.adoc[]
+include::{snippets}/save-image/response-fields.adoc[]
 
 = lectures
 
