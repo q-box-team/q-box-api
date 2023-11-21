@@ -63,10 +63,10 @@ abstract class WebClientDocsTest : DescribeSpec() {
         return mockMvc.perform(get(endpoint, *urlValue).params(params))
     }
 
-    protected fun performFormData(method: HttpMethod, endpoint: String, filename: String): ResultActions {
+    protected fun performFormData(method: HttpMethod, endpoint: String, requestPartKey: String): ResultActions {
         return mockMvc.perform(
             multipart(method, endpoint)
-                .file(filename, ByteArray(0))
+                .file(requestPartKey, ByteArray(0))
                 .with(csrf())
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .characterEncoding(StandardCharsets.UTF_8)
