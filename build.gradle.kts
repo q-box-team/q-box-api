@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.1.4"
-    id("io.spring.dependency-management") version "1.1.3"
+    id("org.springframework.boot") version "3.2.0"
+    id("io.spring.dependency-management") version "1.1.4"
     id("org.jetbrains.kotlinx.kover") version "0.7.3"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
-    kotlin("plugin.jpa") version "1.8.22"
-    kotlin("kapt") version "1.8.22"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.spring") version "1.9.20"
+    kotlin("plugin.jpa") version "1.9.20"
+    kotlin("kapt") version "1.9.20"
 }
 
 group = "site.q-box"
@@ -37,6 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
     //kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
