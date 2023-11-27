@@ -61,6 +61,9 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("com.redis.testcontainers:testcontainers-redis-junit:1.6.4")
 
+    //monitoring
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
     // rest docs
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
