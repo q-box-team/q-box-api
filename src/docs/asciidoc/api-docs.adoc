@@ -84,7 +84,7 @@ include::{snippets}/register-email/http-response.adoc[]
 == email 키 인증
 === HTTP request
 include::{snippets}/authenticate-email/http-request.adoc[]
-include::{snippets}/authenticate-email/query-parameters.adoc[]
+include::{snippets}/authenticate-email/request-body.adoc[]
 
 === HTTP response
 include::{snippets}/authenticate-email/http-response.adoc[]
@@ -93,7 +93,7 @@ include::{snippets}/authenticate-email/http-response.adoc[]
 == image 생성
 === HTTP request
 include::{snippets}/save-image/http-request.adoc[]
-include::{snippets}/save-image/request-fields.adoc[]
+include::{snippets}/save-image/request-body.adoc[]
 
 === HTTP response
 include::{snippets}/save-image/http-response.adoc[]
@@ -123,6 +123,20 @@ include::{snippets}/find-all-lectures/query-parameters.adoc[]
 
 include::{snippets}/find-all-lectures/http-response.adoc[]
 include::{snippets}/find-all-lectures/response-fields.adoc[]
+
+= lecture-bookmark
+
+== 강의 북마크 등록
+
+=== HTTP request
+include::{snippets}/create-lecture-bookmark/http-request.adoc[]
+include::{snippets}/create-lecture-bookmark/request-body.adoc[]
+
+=== HTTP response
+include::{snippets}/create-lecture-bookmark/http-response.adoc[]
+include::{snippets}/create-lecture-bookmark/response-body.adoc[]
+
+
 
 = questions
 == 질문 생성
