@@ -9,6 +9,6 @@ class LectureBookmarkSvc(
     private val lectureBookmarkRepo: LectureBookmarkRepo
 ) {
     fun register(req: CreateLectureBookmarkReq) {
-        lectureBookmarkRepo.save(LectureBookmark(req.memberId, req.lectureId))
+        lectureBookmarkRepo.save(LectureBookmark(req.memberId, req.lecture))
     }
 }

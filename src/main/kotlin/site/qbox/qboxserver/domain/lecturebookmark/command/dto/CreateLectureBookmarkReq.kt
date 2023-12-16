@@ -4,5 +4,5 @@ import site.qbox.qboxserver.domain.lecture.command.entity.LectureId
 
 data class CreateLectureBookmarkReq (
     val memberId : String,
-    val lectureId : LectureId,
+    val lecture : LectureId,
 )
