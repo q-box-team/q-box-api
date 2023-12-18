@@ -29,6 +29,5 @@ class LectureBookmarkDao(
             .having(lectureBookmark.id.memberId.eq(memberId))
             .fetchFirst()
 
-
     }
 }
