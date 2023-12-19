@@ -10,9 +10,10 @@ import site.qbox.qboxserver.domain.member.email.entity.EmailAuthKey
 import site.qbox.qboxserver.domain.member.email.exception.EmailNotAuthenticatedException
 import site.qbox.qboxserver.domain.member.email.infra.AuthenticatedEmailRepo
 import site.qbox.qboxserver.domain.member.email.infra.EmailAuthKeyRepo
+import site.qbox.qboxserver.global.annotation.CommandService
 import java.util.*
 
-@Service
+@CommandService
 class EmailAuthenticationSvc (
     private val authenticationEmailRepo: AuthenticatedEmailRepo,
     private val emailAuthKeyRepo: EmailAuthKeyRepo,
