@@ -30,7 +30,7 @@ class MailSvc(
         val messageHelper = MimeMessageHelper(memeMessage, false, "UTF-8")
         messageHelper.setTo(event.email)
         messageHelper.setSubject("[Q-BOX] 이메일 인증입니다.")
-        messageHelper.setText("다음 링크로 접속하세요 : <a href =\"${serviceUrl}?key=${event.key}\"> [ 인증하기 ] </a>", true)
+        messageHelper.setText("인증키는 [ ${event.key} ] 입니다")
     }
 
 }
