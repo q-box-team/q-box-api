@@ -55,9 +55,9 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                 print(
                     "find-all-questions",
                     queryParameters(
-                        parameterWithName("title").description("제목 포함 내용").optional(),
-                        parameterWithName("body").description("내용 포함 내용").optional(),
-                        parameterWithName("writerNickname").description("작성자 포함 내용").optional(),
+                        parameterWithName("title").description("제목 포함 내용 (optional)").optional(),
+                        parameterWithName("body").description("내용 포함 내용 (optional)").optional(),
+                        parameterWithName("writerNickname").description("작성자 포함 내용 (optional)").optional(),
                         parameterWithName("lectureCode").description("강의 코드"),
                         parameterWithName("lectureDepart").description("강의 해당 학과 ID"),
                         parameterWithName("page").description("page 번호"),
