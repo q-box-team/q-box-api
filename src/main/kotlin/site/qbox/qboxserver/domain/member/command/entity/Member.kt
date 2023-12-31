@@ -1,6 +1,7 @@
 package site.qbox.qboxserver.domain.member.command.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -14,6 +15,7 @@ class Member(
     @Column(nullable = false, unique = true) var nickname: String,
     @Column(nullable = false) var password: String,
     @Column(nullable = false) var departId: Long,
+    @ElementCollection
     val role: Set<Role> = setOf(Role.USER)
 ) : BaseEntity() {
     constructor(
