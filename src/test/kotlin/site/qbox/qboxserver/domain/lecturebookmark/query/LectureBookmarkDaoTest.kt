@@ -3,6 +3,7 @@ package site.qbox.qboxserver.domain.lecturebookmark.query
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringExtension
+import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import site.qbox.qboxserver.domain.lecture.command.LectureRepo
@@ -62,7 +63,15 @@ class LectureBookmarkDaoTest : DescribeSpec() {
         }
 
         it("memberId를 통한 북마크 목록 조회를 수행한다.") {
-           lectureBookmarkDao.findAllByMemberId("aaa")
+           val result = lectureBookmarkDao.findAllByMemberId("aaa")
+
+            result.lectures.count() shouldBe 5
+
+        }
+
+        it("북마크 등록을 안한 유저의 letcure list는 비어있다.") {
+            val result = lectureBookmarkDao.findAllByMemberId("kkk")
+            result.lectures shouldBe emptyList()
         }
 
     }

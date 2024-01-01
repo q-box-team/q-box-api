@@ -3,7 +3,6 @@ package site.qbox.qboxserver.domain.lecturebookmark.query
 import com.querydsl.core.group.GroupBy.groupBy
 import com.querydsl.core.group.GroupBy.list
 import com.querydsl.jpa.impl.JPAQueryFactory
-import jakarta.persistence.EntityNotFoundException
 import site.qbox.qboxserver.domain.lecture.command.entity.QLecture.lecture
 import site.qbox.qboxserver.domain.lecture.query.dto.QLectureRes
 import site.qbox.qboxserver.domain.lecturebookmark.command.entity.QLectureBookmark.lectureBookmark
@@ -28,6 +27,6 @@ class LectureBookmarkDao(
                             lecture.id.code,
                             lecture.id.departId)
                     ))
-            ))[memberId] ?: throw EntityNotFoundException()
+            ))[memberId] ?: LectureBookmarkRes(memberId, emptyList())
     }
 }

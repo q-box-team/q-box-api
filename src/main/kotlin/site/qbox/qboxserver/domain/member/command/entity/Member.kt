@@ -15,7 +15,6 @@ class Member(
     @Column(nullable = false, unique = true) var nickname: String,
     @Column(nullable = false) var password: String,
     @Column(nullable = false) var departId: Long,
-    @ElementCollection
     val role: Set<Role> = setOf(Role.USER)
 ) : BaseEntity() {
     constructor(
