@@ -1,6 +1,7 @@
 package site.qbox.qboxserver.domain.member.command.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import org.springframework.security.crypto.password.PasswordEncoder
