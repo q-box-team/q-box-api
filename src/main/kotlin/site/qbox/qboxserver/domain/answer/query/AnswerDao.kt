@@ -55,7 +55,7 @@ class AnswerDao(
     }
 
     private fun mapToRes(
-        summary: MutableList<AnswerSummary>,
+        summary: List<AnswerSummary>,
         comments: MutableMap<AnswerId, MutableList<AnswerCommentRes>>
     ) = summary.map {
         AnswerRes(it, comments[getAnswerId(it)] ?: emptyList())

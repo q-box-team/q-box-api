@@ -1,7 +1,6 @@
 package site.qbox.qboxserver.domain.member.email.svc
 
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.stereotype.Service
 import site.qbox.qboxserver.domain.member.email.dto.CertifyKeyReq
 import site.qbox.qboxserver.domain.member.email.dto.RegisterEmailReq
 import site.qbox.qboxserver.domain.member.email.dto.event.RegisteredEmailEvent
