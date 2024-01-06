@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component
 
 @Component
 class SortQueryGenerator {
-    fun generate(sort: Sort): Array<OrderSpecifier<String>> {
+    fun <T> generate(sort: Sort): Array<OrderSpecifier<String>> {
         val specs = sort.map {
             val order = when {
                 it.isAscending -> Order.ASC
                 else -> Order.DESC
             }
-            OrderSpecifier(order, Expressions.stringPath(it.property))
+            OrderSpecifier(order, Expressions.constant(it.property))
         }.toList()
 
         return specs.toTypedArray()
