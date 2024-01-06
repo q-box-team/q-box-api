@@ -6,6 +6,7 @@ import site.qbox.qboxserver.domain.lecture.command.entity.QLecture.lecture
 import site.qbox.qboxserver.domain.lecture.query.dto.QLectureRes
 import site.qbox.qboxserver.domain.member.command.entity.QMember.member
 import site.qbox.qboxserver.domain.member.query.MemberQuery
+import site.qbox.qboxserver.domain.question.command.entity.QQuestion
 import site.qbox.qboxserver.domain.question.command.entity.QQuestion.question
 import site.qbox.qboxserver.domain.question.query.dto.*
 import site.qbox.qboxserver.global.annotation.QueryService

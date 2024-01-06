@@ -64,6 +64,11 @@ class QuestionDaoTest : DescribeSpec() {
                 val condition = QuestionCondition(lectureCode = "456", lectureDepart = 1)
                 val result = questionDao.findAllBy(condition, PageRequest.of(0, 100, Sort.Direction.DESC, "title"))
                 result[0].title shouldBe "제목4"
+                result[1].title shouldBe "제목3"
+
+                val resultAsc = questionDao.findAllBy(condition, PageRequest.of(0, 100, Sort.Direction.ASC, "title"))
+                resultAsc[0].title shouldBe "제목3"
+                resultAsc[1].title shouldBe "제목4"
             }
 
             it("Id를 통한 조회를 수행한다") {
