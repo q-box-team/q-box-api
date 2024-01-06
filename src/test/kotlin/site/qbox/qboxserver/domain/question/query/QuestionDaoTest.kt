@@ -7,6 +7,7 @@ import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import site.qbox.qboxserver.domain.lecture.command.LectureRepo
 import site.qbox.qboxserver.domain.lecture.command.entity.Lecture
 import site.qbox.qboxserver.domain.member.command.MemberRepo
@@ -58,6 +59,18 @@ class QuestionDaoTest : DescribeSpec() {
                 val result = questionDao.findAllBy(condition, PageRequest.of(0, 100))
                 result.size shouldBe 3
             }
+
+            it("정렬 기준을 설정해서 조회한다") {
+                val condition = QuestionCondition(lectureCode = "456", lectureDepart = 1)
+                val result = questionDao.findAllBy(condition, PageRequest.of(0, 100, Sort.Direction.DESC, "title"))
+                result[0].title shouldBe "제목4"
+                result[1].title shouldBe "제목3"
+
+                val resultAsc = questionDao.findAllBy(condition, PageRequest.of(0, 100, Sort.Direction.ASC, "title"))
+                resultAsc[0].title shouldBe "제목3"
+                resultAsc[1].title shouldBe "제목4"
+            }
+
             it("Id를 통한 조회를 수행한다") {
                 val any = questionRepo.findAll()[0]
 
