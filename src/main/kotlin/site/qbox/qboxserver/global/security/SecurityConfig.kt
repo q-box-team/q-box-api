@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
 import org.springframework.web.cors.CorsConfiguration
@@ -33,6 +34,7 @@ class SecurityConfig(
                 it.usernameParameter("email")
                 it.passwordParameter("password")
                 it.successHandler(authenticationSuccessHandler())
+                it.failureHandler(authenticationFailureHandler())
             }
             .logout {
                 it.logoutUrl("/logout")
@@ -61,6 +63,12 @@ class SecurityConfig(
     fun authenticationSuccessHandler() =
         AuthenticationSuccessHandler { _, res, _ ->
             res.status = HttpServletResponse.SC_OK
+        }
+
+    @Bean
+    fun authenticationFailureHandler() =
+        AuthenticationFailureHandler { _, res, _ ->
+            res.status = HttpServletResponse.SC_UNAUTHORIZED
         }
 
     @Bean
