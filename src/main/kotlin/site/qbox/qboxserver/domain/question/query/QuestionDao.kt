@@ -6,13 +6,16 @@ import site.qbox.qboxserver.domain.lecture.command.entity.QLecture.lecture
 import site.qbox.qboxserver.domain.lecture.query.dto.QLectureRes
 import site.qbox.qboxserver.domain.member.command.entity.QMember.member
 import site.qbox.qboxserver.domain.member.query.MemberQuery
+import site.qbox.qboxserver.domain.question.command.entity.QQuestion
 import site.qbox.qboxserver.domain.question.command.entity.QQuestion.question
 import site.qbox.qboxserver.domain.question.query.dto.*
 import site.qbox.qboxserver.global.annotation.QueryService
+import site.qbox.qboxserver.global.querydsl.util.SortQueryGenerator
 
 @QueryService
 class QuestionDao(
     private val queryFactory: JPAQueryFactory,
+    private val sortQueryGenerator: SortQueryGenerator,
 ) {
     fun findAllBy(condition: QuestionCondition, pageable: Pageable): List<QuestionSummary> {
         return queryFactory
@@ -22,7 +25,7 @@ class QuestionDao(
             .join(member).on(question.writerId.eq(MemberQuery.id))
             .offset(pageable.offset)
             .limit(pageable.pageSize.toLong())
-            .orderBy(question.createdAt.desc())
+            .orderBy(*sortQueryGenerator.generate(pageable.sort))
             .fetch()
     }
 

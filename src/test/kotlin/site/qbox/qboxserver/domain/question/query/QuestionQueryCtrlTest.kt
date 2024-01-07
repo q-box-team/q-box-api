@@ -46,6 +46,7 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
             params["writerNickname"] =  condition.writerNickname
             params["size"] = "100"
             params["page"] = "0"
+            params["sort"] = "title"
 
             val action = performGet("/questions", params)
 
@@ -62,6 +63,7 @@ class QuestionQueryCtrlTest : WebClientDocsTest() {
                         parameterWithName("lectureDepart").description("강의 해당 학과 ID"),
                         parameterWithName("page").description("page 번호"),
                         parameterWithName("size").description("페이지 당 보여줄 컨텐츠 수(default: 10)"),
+                        parameterWithName("sort").description("정렬 기준, 복수개 넣어도 됨.(ex - title,createdAt), 내림차순 정렬 시 맨 마지막에 desc 넣기(ex- title,desc) (optional)"),
                     ),
                     responseFields(
                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("ID"),
