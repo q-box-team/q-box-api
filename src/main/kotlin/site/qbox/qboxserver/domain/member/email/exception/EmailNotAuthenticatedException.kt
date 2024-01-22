@@ -1,3 +1,5 @@
 package site.qbox.qboxserver.domain.member.email.exception
 
-class EmailNotAuthenticatedException : RuntimeException("Email not authenticated")
+import site.qbox.qboxserver.global.exception.UnauthorizedException
+
+class EmailNotAuthenticatedException : UnauthorizedException()

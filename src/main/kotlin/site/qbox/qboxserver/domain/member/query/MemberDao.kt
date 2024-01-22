@@ -26,7 +26,7 @@ class MemberDao(
             .from(member)
             .join(depart).on(member.departId.eq(depart.id))
             .where(MemberQuery.id.eq(email))
-            .fetchOne() ?: throw NotFoundException()
+            .fetchOne() ?: throw MemberNotFoundException()
     }
 
     fun getAuth(email: String): MemberAuthRes =

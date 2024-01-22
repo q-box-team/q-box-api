@@ -1,3 +1,8 @@
 package site.qbox.qboxserver.global.exception
 
-class NotFoundException : RuntimeException("Not found")
+abstract class NotFoundException : RuntimeException {
+        constructor() : super("Not Found")
+        constructor(message: String) : super(message)
+}
+
+
