@@ -160,6 +160,8 @@ koverReport {
             classes("**.QboxServerApplicationKt")
             classes("**.**Config")
             classes("**.**Query")
+            classes("**.**Exception")
+            classes("**.**ExceptionCtrl")
             classes("**.local.**")
             classes("site.qbox.qboxserver.domain.member.email.svc.MailSvc")
             classes("site.qbox.qboxserver.domain.image.local.LocalStorageImageRepo")

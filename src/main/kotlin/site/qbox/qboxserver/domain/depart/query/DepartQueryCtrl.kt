@@ -12,7 +12,6 @@ import site.qbox.qboxserver.global.security.MemberAuth
 class DepartQueryCtrl (
     private val departDao: DepartDao
 ){
-
     @GetMapping
     fun getAllByAuth(@AuthenticationPrincipal auth: MemberAuth) : List<DepartRes> =
         departDao.getAllByGroup(auth.group)

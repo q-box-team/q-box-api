@@ -1,3 +1,5 @@
 package site.qbox.qboxserver.domain.member.command.exception
 
-class NotMatchPasswordException : RuntimeException()
+import site.qbox.qboxserver.global.exception.UnauthorizedException
+
+class NotMatchPasswordException : UnauthorizedException()
